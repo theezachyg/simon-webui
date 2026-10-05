@@ -1,0 +1,43 @@
+/* Simon: the "Study" skin. Loaded by app.html after the bundle. */
+@font-face {
+	font-family: 'Source Serif 4';
+	src: url('/assets/fonts/SourceSerif4-Variable.ttf') format('truetype');
+	font-weight: 200 900;
+	font-display: swap;
+}
+
+:root {
+	--simon-accent: #7a2e2e;
+	--simon-accent-ink: #5e2222;
+}
+
+body {
+	background: var(--color-white);
+}
+html.dark body {
+	background: var(--color-gray-900);
+}
+
+/* Serif display type for headings, the greeting and model names. */
+h1,
+h2,
+h3,
+.simon-display,
+.markdown-prose h1,
+.markdown-prose h2,
+.markdown-prose h3,
+.prose h1,
+.prose h2,
+.prose h3 {
+	font-family: var(--font-serif-display);
+	letter-spacing: -0.01em;
+	font-weight: 500;
+}
+
+a:not([class*='bg-']) {
+	text-decoration-color: var(--simon-accent);
+}
+
+::selection {
+	background: rgba(122, 46, 46, 0.18);
+}
