@@ -37,10 +37,25 @@ jobs:
       - name: Set up Buildx
         uses: docker/setup-buildx-action@v3
 
+      # The SvelteKit build needs more heap than Node's default (~4 GB) or it
+      # aborts with exit code 134. Upstream does the same injection in its CI.
+      - name: Prepare CI Dockerfile (raise the Node heap limit for the frontend build)
+        run: |
+          awk '
+            /^FROM --platform=\$BUILDPLATFORM node:/ {
+              print
+              print "ENV NODE_OPTIONS=\"--max-old-space-size=12288\""
+              next
+            }
+            { print }
+          ' Dockerfile > "${RUNNER_TEMP}/Dockerfile"
+          grep -n NODE_OPTIONS "${RUNNER_TEMP}/Dockerfile"
+
       - name: Build and push (linux/amd64)
         uses: docker/build-push-action@v6
         with:
           context: .
+          file: ${{ runner.temp }}/Dockerfile
           platforms: linux/amd64
           push: true
           tags: |
